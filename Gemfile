@@ -9,4 +9,3 @@ group :development do
   gem "rvm"
   gem "rake"
 end
-
