@@ -5,7 +5,7 @@ class RSpecAdapter
   def self.command(project_path, ruby_interpreter, files)
     spec_command = RubyEnv.ruby_command(project_path, :script => "script/spec", :bin => "rspec",
                                                       :ruby_interpreter => ruby_interpreter)
-    "export RSPEC_COLOR=true; #{spec_command} -O spec/spec.opts #{files}"
+    "export RSPEC_COLOR=true; #{spec_command} #{files}"
   end
   
   def self.test_files(dir)
