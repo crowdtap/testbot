@@ -1,3 +1,5 @@
+require File.expand_path(File.join(File.dirname(__FILE__), "/helpers/ruby_env"))
+
 class RSpecAdapter
   
   def self.command(ruby_interpreter, files)

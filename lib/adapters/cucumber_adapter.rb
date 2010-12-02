@@ -1,6 +1,8 @@
+require File.expand_path(File.join(File.dirname(__FILE__), "/helpers/ruby_env"))
+
 class CucumberAdapter
   
-  def self.command(ruby_interpreter, files)
+  def self.command(project_path, ruby_interpreter, files)
     "export AUTOTEST=1; #{ruby_interpreter} bundle exec cucumber -f progress --backtrace -r features/support -r features/step_definitions #{files} -t ~@disabled_in_cruise"
   end
  
