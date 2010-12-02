@@ -1,7 +1,7 @@
 class RSpecAdapter
   
   def self.command(ruby_interpreter, files)
-    "export RSPEC_COLOR=true; #{ruby_interpreter} script/spec -O spec/spec.opts #{files}"
+    "export RSPEC_COLOR=true; bundle exec rspec -O spec/spec.opts #{files}"
   end
   
   def self.test_files(dir)
