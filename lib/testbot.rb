@@ -8,7 +8,7 @@ unless defined?(Testbot)
     require 'railtie' if defined?(Rails)
 
     # Don't forget to update readme and changelog
-    VERSION = "v0.3.9.crowdtap"
+    VERSION = "crowdtap-v0.3.9"
 
     SERVER_PID = "/tmp/testbot_server.pid"
     RUNNER_PID = "/tmp/testbot_runner.pid"
