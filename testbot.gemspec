@@ -1,10 +1,6 @@
 #-*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require File.expand_path("lib/testbot")
-
 Gem::Specification.new do |s|
   s.name        = "testbot"
-  s.version     = Testbot::VERSION
   s.authors     = ["Joakim Kolsjö"]
   s.email       = ["joakim.kolsjo@gmail.com"]
   s.homepage    = "http://github.com/joakimk/testbot"
