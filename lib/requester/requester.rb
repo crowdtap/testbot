@@ -45,6 +45,7 @@ module Testbot::Requester
 
       files = adapter.test_files(dir) 
       sizes = adapter.get_sizes(files)
+      git_hash = `git rev-parse HEAD`
 
       build_id = HTTParty.post("#{server_uri}/builds", :body => { :root => root,
                                :type => adapter.type.to_s,
@@ -53,6 +54,8 @@ module Testbot::Requester
                                :available_runner_usage => config.available_runner_usage,
                                :files => files.join(' '),
                                :sizes => sizes.join(' '),
+                               :git_hash => git_hash,
+                               :git_repo => config.git_repo,
                                :jruby => jruby? })
 
 

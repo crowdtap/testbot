@@ -23,6 +23,8 @@ module Testbot::Server
                    :type => self.type,
                    :requester_mac => self.requester_mac,
                    :build => self,
+                   :git_hash => self.git_hash,
+                   :git_repo => self.git_repo,
                    :jruby => self.jruby)
       end
     end

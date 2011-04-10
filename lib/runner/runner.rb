@@ -131,7 +131,16 @@ module Testbot::Runner
     end
 
     def fetch_code(job)
-      system "rsync -az --delete -e ssh #{job.root}/ #{job.project}"
+      if job.git_hash
+        unless File.directory?("#{job.project}/.git")
+          system "rm -rf #{job.project}"
+          system "git clone #{job.git_repo}"
+        end
+        system "cd #{job.project} && git fetch && git checkout -f #{job.git_hash}"
+        puts "After git checkout"
+      else
+        system "rsync -az --delete -e ssh #{job.root}/ #{job.project}"
+      end
     end
 
     def before_run(job)
