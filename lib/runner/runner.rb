@@ -144,7 +144,7 @@ module Testbot::Runner
     end
 
     def cpu_available?
-      @instances.size > 0 || CPU.current_usage < MAX_CPU_USAGE_WHEN_IDLE
+      @instances.size < CPU.count
     end
 
     def time_for_update?
