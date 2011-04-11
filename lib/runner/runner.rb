@@ -139,7 +139,12 @@ module Testbot::Runner
           system "rm -rf #{job.project}"
           system "git clone #{job.git_repo} #{job.project}"
         end
-        system "cd #{job.project} && git fetch && git checkout -f #{job.git_hash}"
+        found_repo = `cd #{job.project}; git remote -v | grep #{job.git_repo} | grep push`
+        if found_repo.blank?
+          remote_name = job.git_repo.match(/.*\/(.*)\..*/)[1]
+          `cd #{job.project} && git remote add #{remote_name} #{job.git_repo}`
+        end
+        system "cd #{job.project} && git fetch --all && git checkout -f #{job.git_hash}"
       else
         system "rsync -az --delete -e ssh #{job.root}/ #{job.project}"
       end
