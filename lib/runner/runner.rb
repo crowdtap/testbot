@@ -137,7 +137,7 @@ module Testbot::Runner
       if job.git_hash
         unless File.directory?("#{job.project}/.git")
           system "rm -rf #{job.project}"
-          system "git clone #{job.git_repo}"
+          system "git clone #{job.git_repo} #{job.project}"
         end
         system "cd #{job.project} && git fetch && git checkout -f #{job.git_hash}"
       else
@@ -147,6 +147,7 @@ module Testbot::Runner
 
     def before_run(job)
       bundler_cmd = RubyEnv.bundler?(job.project) ? "bundle; " : ""
+      system "cd #{job.project}; bundle install --local" unless bundler_cmd.blank?
       system "export RAILS_ENV=test; export TEST_INSTANCES=#{@config.max_instances}; cd #{job.project}; #{bundler_cmd} rake testbot:before_run"
     end
 
