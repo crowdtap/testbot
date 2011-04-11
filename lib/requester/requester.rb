@@ -40,8 +40,10 @@ module Testbot::Requester
         server_uri = "http://#{config.server_host}:#{Testbot::SERVER_PORT}"
       end
 
-      rsync_ignores = config.rsync_ignores.to_s.split.map { |pattern| "--exclude='#{pattern}'" }.join(' ')
-      system "rsync -az --delete -e ssh #{rsync_ignores} . #{rsync_uri}"
+      unless config.git_repo
+        rsync_ignores = config.rsync_ignores.to_s.split.map { |pattern| "--exclude='#{pattern}'" }.join(' ')
+        system "rsync -az --delete -e ssh #{rsync_ignores} . #{rsync_uri}"
+      end
 
       files = adapter.test_files(dir) 
       sizes = adapter.get_sizes(files)

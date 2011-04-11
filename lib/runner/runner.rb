@@ -96,9 +96,11 @@ module Testbot::Runner
         next_params = base_params
         if @instances.size > 0
           next_params.merge!({ :requester_mac => @last_requester_mac })
+          next_params.merge!({ :build_id => @last_build_id })
           next_params.merge!({ :no_jruby => true }) if max_jruby_instances?
         else
           @last_requester_mac = nil
+          @last_build_id = nil
         end
 
         # Makes sure all instances are listed as available after a run
@@ -110,7 +112,7 @@ module Testbot::Runner
         next unless last_check_found_a_job
 
         job = Job.new(*([ self, next_job.split(',') ].flatten))
-        if first_job_from_requester?
+        if first_job_from_requester? || first_job_of_build?
           fetch_code(job)
           before_run(job) if File.exists?("#{job.project}/lib/tasks/testbot.rake")
         end
@@ -118,6 +120,7 @@ module Testbot::Runner
         @instances << [ Thread.new { job.run(free_instance_number) },
           free_instance_number, job ]
         @last_requester_mac = job.requester_mac
+        @last_build_id = job.build_id
         loop do
           clear_completed_instances
           break unless max_instances_running?
@@ -137,7 +140,6 @@ module Testbot::Runner
           system "git clone #{job.git_repo}"
         end
         system "cd #{job.project} && git fetch && git checkout -f #{job.git_hash}"
-        puts "After git checkout"
       else
         system "rsync -az --delete -e ssh #{job.root}/ #{job.project}"
       end
@@ -150,6 +152,10 @@ module Testbot::Runner
 
     def first_job_from_requester?
       @last_requester_mac == nil
+    end
+
+    def first_job_of_build?
+      @last_build_id == nil
     end
 
     def cpu_available?

@@ -2,11 +2,11 @@ require File.expand_path(File.join(File.dirname(__FILE__), 'runner.rb'))
 
 module Testbot::Runner
   class Job
-    attr_reader :root, :project, :requester_mac, :git_hash, :git_repo
+    attr_reader :root, :project, :requester_mac, :git_hash, :git_repo, :build_id
 
-    def initialize(runner, id, requester_mac, project, root, type, ruby_interpreter, files, git_hash, git_repo)
-      @runner, @id, @requester_mac, @project, @root, @type, @ruby_interpreter, @files, @git_hash, @git_repo =
-        runner, id, requester_mac, project, root, type, ruby_interpreter, files, git_hash, git_repo
+    def initialize(runner, id, requester_mac, project, root, type, ruby_interpreter, files, git_hash, git_repo, build_id)
+      @runner, @id, @requester_mac, @project, @root, @type, @ruby_interpreter, @files, @git_hash, @git_repo, @build_id =
+        runner, id, requester_mac, project, root, type, ruby_interpreter, files, git_hash, git_repo, build_id
     end
 
     def jruby?
