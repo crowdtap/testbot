@@ -134,7 +134,7 @@ module Testbot::Runner
     end
 
     def fetch_code(job)
-      if job.git_hash
+      unless job.git_repo.blank?
         unless File.directory?("#{job.project}/.git")
           system "rm -rf #{job.project}"
           system "git clone #{job.git_repo} #{job.project}"
