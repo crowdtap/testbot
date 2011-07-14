@@ -21,7 +21,11 @@ module Testbot::Runner
 
       adapter = Adapter.find(@type)
       run_time = measure_run_time do
-        result += run_and_return_result("#{base_environment} #{adapter.command(@project, ruby_cmd, @files)}")
+        result += run_and_return_result("#{base_environment} #{adapter.command(@project, ruby_cmd, @files, test_env_number)}")
+        if adapter.rerunnable? && !success?
+          result += "\n\n** RETRYING FAILED TESTS ***\n\n"
+          result +=  run_and_return_result("#{base_environment} #{adapter.command(@project, ruby_cmd, @files, test_env_number)}")
+        end
       end
 
       Server.put("/jobs/#{@id}", :body => { :result => result, :success => success?, :time => run_time })

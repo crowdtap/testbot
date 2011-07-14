@@ -40,6 +40,10 @@ class RSpecAdapter
     'spec'
   end
 
+  def self.rerunnable?
+    false
+  end
+
 private
 
   def self.file_pattern

@@ -2,10 +2,10 @@ require File.expand_path(File.join(File.dirname(__FILE__), "/helpers/ruby_env"))
 
 class CucumberAdapter
   
-  def self.command(project_path, ruby_interpreter, files)
+  def self.command(project_path, ruby_interpreter, files, test_env_number)
     cucumber_command = RubyEnv.ruby_command(project_path, :script => "script/cucumber", :bin => "cucumber",
                                                           :ruby_interpreter => ruby_interpreter)
-    "export AUTOTEST=1; #{cucumber_command} -f progress --backtrace -r features/support -r features/step_definitions #{files} -t ~@disabled"
+    "RERUN_FILE=rerun_#{test_env_number}.txt #{cucumber_command} #{files} --profile rerun"
   end
  
   def self.test_files(dir)
@@ -31,9 +31,13 @@ class CucumberAdapter
   def self.name
     'Cucumber'
   end
-  
+
   def self.type
     pluralized
+  end
+
+  def self.rerunnable?
+    true
   end
 
 private

@@ -2,7 +2,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "/helpers/ruby_env"))
 
 class TestUnitAdapter
   
-  def self.command(project_path, ruby_interpreter, files)
+  def self.command(project_path, ruby_interpreter, files, test_env_number)
     ruby_command = RubyEnv.ruby_command(project_path, :ruby_interpreter => ruby_interpreter)
     "#{ruby_command} -Itest -e '%w(#{files}).each { |file| require(file) }'"
   end
@@ -34,6 +34,10 @@ class TestUnitAdapter
   def self.type
     'test'
   end  
+
+  def self.rerunnable?
+    false
+  end
   
 private
 

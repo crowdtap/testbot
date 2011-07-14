@@ -2,7 +2,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "/helpers/ruby_env"))
 
 class RSpec2Adapter
 
-  def self.command(project_path, ruby_interpreter, files)
+  def self.command(project_path, ruby_interpreter, files, test_env_number)
     spec_command = RubyEnv.ruby_command(project_path,
       :bin => "rspec",
       :ruby_interpreter => ruby_interpreter)
@@ -40,6 +40,10 @@ class RSpec2Adapter
 
   def self.type
     'rspec'
+  end
+
+  def self.rerunnable?
+    false
   end
 
 private
