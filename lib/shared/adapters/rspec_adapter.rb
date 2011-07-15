@@ -2,7 +2,7 @@ require File.expand_path(File.join(File.dirname(__FILE__), "/helpers/ruby_env"))
 
 class RSpecAdapter
   
-  def self.command(project_path, ruby_interpreter, files)
+  def self.command(project_path, ruby_interpreter, files, test_env_number)
     spec_command = RubyEnv.ruby_command(project_path, :script => "script/spec", :bin => "rspec",
                                                       :ruby_interpreter => ruby_interpreter)
     if File.exists?("#{project_path}/spec/spec.opts")
