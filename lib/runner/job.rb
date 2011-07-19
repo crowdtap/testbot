@@ -23,6 +23,10 @@ module Testbot::Runner
       run_time = measure_run_time do
         result += run_and_return_result("#{base_environment} #{adapter.command(@project, ruby_cmd, @files, test_env_number)}")
         if adapter.rerunnable? && !success?
+          until `ps -ef | grep java | grep -v grep`.empty? do
+            sleep(15)
+            puts "waiting..."
+          end
           result += "\n\n** RETRYING FAILED TESTS ***\n\n"
           result +=  run_and_return_result("#{base_environment} #{adapter.command(@project, ruby_cmd, @files, test_env_number)}")
         end
