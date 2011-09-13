@@ -69,9 +69,10 @@ module Testbot::Runner
           update_uid!
           start_ping
           wait_for_jobs
-        rescue Exception => ex
-          break if [ 'SignalException', 'Interrupt' ].include?(ex.class.to_s)
-          puts "The runner crashed, restarting. Error: #{ex.inspect} #{ex.class}"
+        rescue Exception => exception
+          break if [ 'SignalException', 'Interrupt' ].include?(exception.class.to_s)
+          puts "The runner crashed, restarting. Error: #{exception.inspect} #{exception.class}"
+          puts exception.backtrace.join("\n")
         end
       end
     end
