@@ -5,7 +5,7 @@ class CucumberAdapter
   def self.command(project_path, ruby_interpreter, files, test_env_number)
     cucumber_command = RubyEnv.ruby_command(project_path, :script => "script/cucumber", :bin => "cucumber",
                                                           :ruby_interpreter => ruby_interpreter)
-    "RERUN_FILE=rerun_#{test_env_number}.txt #{cucumber_command} features/client_manages_hosted_party.feature:96 --profile rerun"
+    "RERUN_FILE=rerun_#{test_env_number}.txt #{cucumber_command} #{files} --profile rerun"
   end
  
   def self.test_files(dir)
