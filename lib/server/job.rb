@@ -8,7 +8,8 @@ module Testbot::Server
       super(hash)
       if self.build
         done = !Job.all.find { |j| !j.result && j.build == self.build }
-        self.build.update(:results => build.results.to_s + self.result.to_s,
+        self.build.update(:results => build.results.to_s + self.result.to_s, 
+                          :rerun => self.rerun.to_s + " " + build.rerun.to_s,
                           :done => done)
 
         build_broken_by_job = (self.success == "false" && build.success)

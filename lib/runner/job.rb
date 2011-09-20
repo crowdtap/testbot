@@ -20,19 +20,18 @@ module Testbot::Runner
       base_environment = "export RAILS_ENV=test; export TEST_ENV_NUMBER=#{test_env_number}; cd #{@project};"
 
       adapter = Adapter.find(@type)
+      failed_tests = nil
+      success = false
       run_time = measure_run_time do
         result += run_and_return_result("#{base_environment} #{adapter.command(@project, ruby_cmd, @files, test_env_number)}")
-        if adapter.rerunnable? && !success?
-          until `ps -ef | grep java | grep -v grep`.empty? do
-            sleep(15)
-            puts "waiting..."
-          end
-          result += "\n\n** RETRYING FAILED TESTS ***\n\n"
-          result +=  run_and_return_result("#{base_environment} #{adapter.command(@project, ruby_cmd, @files, test_env_number)}")
+        success = ($?.exitstatus == 0)
+        if adapter.rerunnable? && !success
+          failed_tests = `cat #{@project}/rerun*.txt`
+          puts "Failed tests: #{failed_tests}"
         end
       end
 
-      Server.put("/jobs/#{@id}", :body => { :result => result, :success => success?, :time => run_time })
+      Server.put("/jobs/#{@id}", :body => { :result => result, :success => success, :rerun => failed_tests, :time => run_time })
       puts "Job #{@id} finished."
     end
 
@@ -46,10 +45,6 @@ module Testbot::Runner
 
     def run_and_return_result(command)
       `#{command} 2>&1`
-    end
-
-    def success?
-      $?.exitstatus == 0
     end
 
     def ruby_cmd

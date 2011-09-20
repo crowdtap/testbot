@@ -30,7 +30,7 @@ module Testbot::Server
   get '/builds/:id' do
     build = Build.find(params[:id])
     build.destroy if build.done
-    { "done" => build.done, "results" => build.results, "success" => build.success }.to_json
+    { "done" => build.done, "results" => build.results, "success" => build.success, "rerun" => build.rerun }.to_json
   end
 
   get '/jobs/next' do
@@ -42,7 +42,7 @@ module Testbot::Server
   end
 
   put '/jobs/:id' do
-    Job.find(params[:id]).update(:result => params[:result], :success => params[:success]); nil
+    Job.find(params[:id]).update(:result => params[:result], :success => params[:success], :rerun => params[:rerun]); nil
   end
 
   get '/runners/ping' do
