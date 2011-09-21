@@ -103,8 +103,10 @@ module Testbot::Requester
       unless @build['rerun'].blank? || @build['success']
         puts "*"*88
         puts "\n FAILED TESTS BEING RERUN \n\n"
+        puts " #{@build['rerun']}"
         puts "*"*88
-        system("export RAILS_ENV=test && bundle exec rake mongo:clear && bundle exec rake mongoid:migrate --trace && bundle exec script/cucumber #{@build['rerun']}")
+        puts `export RAILS_ENV=test && bundle exec rake mongo:clear && bundle exec rake mongoid:migrate --trace 2>&1` if ENV["VERBOSE"] == "1"
+        puts `bundle exec script/cucumber #{@build['rerun']} 2>&1`
         retry_success = ($?.exitstatus == 0)
       else
         retry_success = @build['success']
