@@ -99,12 +99,18 @@ module Testbot::Requester
       puts if config.simple_output
 
       # Retry tests
-      unless @build['rerun'].blank?
-        puts "\n Trying to run failed tests locally \n"
+      retry_success = true
+      unless @build['rerun'].blank? || @build['success']
+        puts "*"*88
+        puts "\n FAILED TESTS BEING RERUN \n\n"
+        puts "*"*88
         system("export RAILS_ENV=test && bundle exec rake mongo:clear && bundle exec rake mongoid:migrate --trace && bundle exec script/cucumber #{@build['rerun']}")
+        retry_success = ($?.exitstatus == 0)
+      else
+        retry_success = @build['success']
       end
 
-      @build["success"]
+      retry_success
     end
 
     def self.create_by_config(path)
