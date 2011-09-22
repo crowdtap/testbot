@@ -106,7 +106,7 @@ module Testbot::Requester
         puts "#{@build['rerun'].split.join('\n')}"
         puts "*"*88
         puts `export RAILS_ENV=test && bundle exec rake mongo:clear && bundle exec rake mongoid:migrate --trace 2>&1` if ENV["VERBOSE"] == "1"
-        puts `bundle exec script/cucumber #{@build['rerun']} 2>&1`
+        puts `export RAILS_ENV=test && bundle exec script/cucumber #{@build['rerun']} 2>&1`
         retry_success = ($?.exitstatus == 0)
       else
         retry_success = @build['success']
