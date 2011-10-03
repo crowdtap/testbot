@@ -26,7 +26,7 @@ module Testbot::Runner
         result += run_and_return_result("#{base_environment} #{adapter.command(@project, ruby_cmd, @files, test_env_number)}")
         success = ($?.exitstatus == 0)
         if adapter.rerunnable? && !success
-          failed_tests = `cat #{@project}/rerun*.txt`
+          failed_tests = `cat #{@project}/rerun_#{test_env_number}.txt`
           puts "Failed tests: #{failed_tests}"
         end
       end
