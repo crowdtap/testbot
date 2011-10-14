@@ -109,7 +109,6 @@ module Testbot::Runner
         next unless cpu_available?
 
         next_job = Server.get("/jobs/next", :query => next_params) rescue nil
-        puts next_job.response.content_length
         last_check_found_a_job = (next_job.response.content_length != 0)
         next unless last_check_found_a_job
 
