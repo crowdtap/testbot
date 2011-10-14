@@ -109,7 +109,8 @@ module Testbot::Runner
         next unless cpu_available?
 
         next_job = Server.get("/jobs/next", :query => next_params) rescue nil
-        last_check_found_a_job = (next_job != nil)
+        puts next_job.response.content_length
+        last_check_found_a_job = (next_job.response.content_length != 0)
         next unless last_check_found_a_job
 
         job = Job.new(*([ self, next_job.split(',') ].flatten))
@@ -135,7 +136,7 @@ module Testbot::Runner
     end
 
     def fetch_code(job)
-      unless job.git_repo.blank?
+      unless job.git_repo.empty?
         unless File.directory?("#{job.project}/.git")
           system "rm -rf #{job.project}"
           system "git clone #{job.git_repo} #{job.project}"
