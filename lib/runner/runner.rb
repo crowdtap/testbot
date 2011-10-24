@@ -141,7 +141,7 @@ module Testbot::Runner
           system "git clone #{job.git_repo} #{job.project}"
         end
         found_repo = `cd #{job.project}; git remote -v | grep #{job.git_repo} | grep push`
-        if found_repo.blank?
+        if found_repo.empty?
           remote_name = job.git_repo.match(/.*\/(.*)\..*/)[1]
           `cd #{job.project} && git remote add #{remote_name} #{job.git_repo}`
         end
