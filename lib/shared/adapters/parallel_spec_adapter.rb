@@ -3,13 +3,12 @@ require File.expand_path(File.join(File.dirname(__FILE__), "/helpers/ruby_env"))
 class ParallelSpecAdapter
 
   def self.command(project_path, ruby_interpreter, files, test_env_number)
-    specs = files.gsub(/\.rb/,"").gsub(/\w*\//,"")
+    specs = files.gsub(/\.rb/,"").gsub(/\w*\//,"\/").gsub(" ","|")
     puts "Specs: #{specs}"
     "bundle exec rake parallel:spec['#{specs}']"
   end
 
   def self.test_files(dir)
-    puts "Dir: #{dir}"
     Dir["#{dir}/#{file_pattern}"]
   end
 
