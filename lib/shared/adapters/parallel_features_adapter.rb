@@ -7,7 +7,7 @@ class ParallelFeaturesAdapter
                                                           :ruby_interpreter => ruby_interpreter)
     features = files.gsub(/\.feature/,"").gsub("features/","").gsub(" ","|")
     puts "Features: #{features}"
-    "rake parallel:features['#{features}']"
+    "bundle exec rake parallel:features['#{features}']"
   end
  
   def self.test_files(dir)

@@ -5,7 +5,7 @@ class ParallelSpecAdapter
   def self.command(project_path, ruby_interpreter, files, test_env_number)
     specs = files.gsub(/\.rb/,"").gsub(/\w*\//,"")
     puts "Specs: #{specs}"
-    "rake parallel:spec['#{specs}']"
+    "bundle exec rake parallel:spec['#{specs}']"
   end
 
   def self.test_files(dir)
