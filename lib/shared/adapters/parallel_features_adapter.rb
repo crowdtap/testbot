@@ -5,7 +5,7 @@ class ParallelFeaturesAdapter
   def self.command(project_path, ruby_interpreter, files, test_env_number)
     cucumber_command = RubyEnv.ruby_command(project_path, :script => "rake parallel:features",
                                                           :ruby_interpreter => ruby_interpreter)
-    features = files.gsub(/\.feature/,"").gsub("features/","\/").gsub(" ","|")
+    features = files.gsub(/\.feature/,"").gsub("features/","").gsub(" ",'|\/')
     puts "Features: #{features}"
     "bundle exec rake parallel:features['#{features}']"
   end
