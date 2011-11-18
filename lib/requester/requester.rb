@@ -40,12 +40,11 @@ module Testbot::Requester
         server_uri = "http://#{config.server_host}:#{Testbot::SERVER_PORT}"
       end
 
-      unless config.git_repo
+      if config.git_repo.blank?
         rsync_ignores = config.rsync_ignores.to_s.split.map { |pattern| "--exclude='#{pattern}'" }.join(' ')
         system "rsync -az --delete -e ssh #{rsync_ignores} . #{rsync_uri}"
       else
         git_hash = `git rev-parse HEAD`
-        git_repo = `git remote -v | grep origin | grep fetch | awk '{ print $2 }'`.gsub("\n","")
       end
 
       files = adapter.test_files(dir) 
@@ -59,7 +58,7 @@ module Testbot::Requester
                                :files => files.join(' '),
                                :sizes => sizes.join(' '),
                                :git_hash => git_hash,
-                               :git_repo => git_repo,
+                               :git_repo => config.git_repo,
                                :jruby => jruby? })
 
 
